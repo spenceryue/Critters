@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,9 +22,15 @@ public class Main {
 	// true -> default "make" command of 100 Algae, 25 Craig
 	private static boolean test_Stage12 = false;
 	private static boolean allowQuick = true;
+	private static List<String> classes = new java.util.ArrayList<String>();
 	
 	public static void main(String[] args) throws InvalidCritterException {
 		Scanner sc = new Scanner(System.in);
+		buildClassList();
+		System.out.print("Available Critters: "+classes.get(0));
+		for (String s : classes.subList(1, classes.size()-1))
+			System.out.print(", "+s);
+		System.out.println("\n");
 		
 		while (true) {
 			System.out.print("critters> ");
@@ -54,7 +61,7 @@ public class Main {
 					// remove print statement... "*"
 				{System.out.println("*");printUsage();}
 			else if (s.equals("make"))
-				if (i+1<input.length && input[i+1].matches("[a-zA-Z[0-9][.]]++"))
+				if (i+1<input.length && classes.contains(input[i+1]))
 					if (i+2<input.length && input[i+2].matches("\\d+"))
 						for (int j=0; j<Integer.parseInt(input[i+2]); j++)
 							try {
@@ -83,7 +90,7 @@ public class Main {
 					// remove print statement... "**"
 					{System.out.println("**");printUsage();}
 			else if (s.equals("stats"))
-				if (i+1<input.length && input[i+1].matches("[a-zA-Z[0-9][.]]++"))
+				if (i+1<input.length && classes.contains(input[i+1]))
 					try {
 						String qualifiedName = input[i+1];
 						if (!input[i+1].startsWith("project4."))
@@ -136,5 +143,25 @@ public class Main {
 				+ "\t\tunless the test_Stage12 flag is set, in which case 100 Algae and 25 Craigs are made.\n"
 				+ "stats <class_name>\tinvokes Critter.getInstances(<class_name>) and passes the returning List<Critter>\n"
 				+ "\t\tobject to the <class_name> specific static runStats() method\n");
+	}
+	
+	private static void buildClassList() {
+		File root = new File(".");
+		explore(root);
+		classes.remove("InvalidCritterException");
+		classes.remove("Critter$TestCritter");
+		classes.remove("Critter");
+		classes.remove("Main");
+		classes.remove("Params");
+		classes.remove("Point");
+	}
+	
+	private static void explore(File start){
+		for (File f : start.listFiles())
+			if (f.isDirectory())
+				explore(f);
+			else if (f.isFile())
+				if (f.getName().endsWith(".class"))
+					classes.add(f.getName().substring(0,f.getName().length()-6));
 	}
 }
