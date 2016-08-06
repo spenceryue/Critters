@@ -1,6 +1,5 @@
-/* CRITTERS Main.java
+/* CRITTERS
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
  * Spencer Yue
  * STY223
  * https://github.com/spenceryue/critters
@@ -10,6 +9,10 @@
 package project4;
 
 import java.util.Map;
+
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
@@ -108,13 +111,48 @@ public abstract class Critter {
 		walk(direction);
 	}
 	
+	protected final String look(int direction){
+		return look(direction,1);
+	}
+	
+	protected final String look2(int direction){
+		return look(direction,2);
+	}
+	
+	private final String look(int direction, int depth) {
+		// sufficient energy?
+		if (energy < Params.look_energy_cost)
+			return null;
+		else
+			energy -= Params.look_energy_cost;
+		// get indicated direction
+		int[] coord = interpret(direction);
+		// construct new (x,y)
+		int x = (x_coord+coord[0]*depth+Params.world_width)%Params.world_width;
+		int y = (y_coord+coord[1]*depth+Params.world_height)%Params.world_height;
+		// construct Point for search location
+		Point pp = new Point(x,y);
+		// use up-to-date grid when resolving conflicts
+		List<Critter> result = grid.get(pp);
+		if (resolving) {
+			if (result == null || result.isEmpty())
+				return null;
+			else if (!grid.get(pp).isEmpty())
+				return result.get(0).toString();
+		}
+		// regular operation: check startingPlace for searched Point
+		if (!startingPlace.containsKey(this))
+			return null;
+		else
+			return startingPlace.get(this).toString();
+	}
+	
 	protected final void reproduce(Critter offspring, int direction) {
 //		if (offspring.getClass().getName().equals("project4.Berserker"))
 //		System.out.println("BERSERKER SPAWNED!!!");
 
 		// conditions? 1. sufficient energy? (yes -> incur cost)	2. alive still?		3. child will live?
 		if (energy < Params.min_reproduce_energy) return;
-		else energy -= Params.min_reproduce_energy;
 		if (energy == 0) return;
 		if (energy == 1) return;
 		// set child energy, parent energy
@@ -133,7 +171,30 @@ public abstract class Critter {
 //		System.out.println(offspring.x_coord+" "+offspring.y_coord+" "+ offspring.energy);			
 		// DEBUG	*****	*****	*****	*****	REMOVE LATER	*****	*****	*****	*****
 	}
-
+	
+	// My Custom Formatting Options: 
+	// I draw each Critter as a circle with its own ASCII symbol inside.
+	// I specify the cirlce outline, cirlce fill, and text fill for each Critter.
+	// Default is Black, White, Black respectively.
+	protected final String viewShape() {
+		return "Circle";
+	}
+	
+	protected javafx.scene.paint.Color viewOutlineColor() {
+		return Color.BLACK;
+	}
+	protected javafx.scene.paint.Color viewFillColor() {
+		return Color.WHITE;
+	}
+	
+	protected javafx.scene.paint.Color viewTextColor() {
+		return Color.BLACK;
+	}
+	
+	public final javafx.scene.paint.Color[] getIconParameters(){
+		return new javafx.scene.paint.Color[] {viewOutlineColor(), viewFillColor(), viewTextColor()};
+	}
+	
 	public abstract void doTimeStep();
 	public abstract boolean fight(String oponent);
 	
@@ -251,12 +312,17 @@ public abstract class Critter {
 			Point old = super.p;
 			int[] pair = old.pair();
 			Point newPoint = new Point(super.x_coord, super.y_coord);
+			// remove Critter from old location in grid
 			if (grid.containsKey(old))
 				grid.get(old).remove(this);
+			// add Critter to new location in grid
 			if (!grid.containsKey(newPoint))
 				grid.put(newPoint,new java.util.LinkedList<Critter>());
 			grid.get(newPoint).add(this);
 			super.p = newPoint;
+			// record Critter location in startingPlace (for this turn)
+			if (!startingPlace.containsKey(this))
+				startingPlace.put(this, old);
 			// erase previous spot on world String[][]
 			world[pair[1]][pair[0]+1] = " ";
 		}
@@ -266,20 +332,26 @@ public abstract class Critter {
 		Point old = p;
 		int[] pair = old.pair();
 		Point newPoint = new Point(x_coord, y_coord);
+		// remove Critter from old location in grid
 		if (grid.containsKey(old))
 			grid.get(old).remove(this);
+		// add Critter to new location in grid
 		if (!grid.containsKey(newPoint))
 			grid.put(newPoint,new java.util.LinkedList<Critter>());
 		grid.get(newPoint).add(this);
-		this.p = newPoint;
+		// record Critter location in startingPlace (for this turn)
+		if (!startingPlace.containsKey(this))
+			startingPlace.put(this, old);
 		// erase previous spot on world String[][]
-		world[pair[1]][pair[0]+1] = " "; 
+		world[pair[1]][pair[0]+1] = " ";
 	}
 	
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> active = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	private static Map<Point,List<Critter>> grid = new java.util.HashMap<Point,List<Critter>>();
+	private static Map<Critter,Point> startingPlace = new java.util.HashMap<Critter,Point>();
+	private static Map<Critter,Icon> iconBank = new java.util.HashMap<Critter,Icon>();
 	
 	private static boolean resolve(List<Critter> conflicts) {
 		if (conflicts.isEmpty() || conflicts.size() == 1)
@@ -350,7 +422,7 @@ public abstract class Critter {
 			grid.get(c.p).add(c);
 			I.remove();
 		}
-		
+
 		// for each active Critter...
 		for (Critter c : active) {
 			// 1. set hasWalked = false;
@@ -369,7 +441,9 @@ public abstract class Critter {
 		// 2. call resolve() for each conflicting grid node
 			if (grid.get(c.p).size() > 1 && c.energy > 0)
 				resolve(grid.get(c.p));
-		// 3. Lower resolving flag
+		// 3. clear startingPlace map for next turn
+			startingPlace.clear();
+		// 4. Lower resolving flag
 			resolving = false;
 		}
 		
@@ -386,7 +460,7 @@ public abstract class Critter {
 			babies.add(a);
 			population.add(a);
 		}
-			
+
 		// clean up dead
 		I = active.iterator();
 		while (I.hasNext()) {
@@ -396,9 +470,19 @@ public abstract class Critter {
 				grid.get(c.p).remove(c);
 				I.remove();
 				world[c.y_coord][c.x_coord+1] = " ";
+				iconBank.remove(c);
+				Node self = Viewer.spaceMap.remove(c.p);
+				Viewer.trash.getChildren().remove(self);
+				Viewer.world.getChildren().remove(self);
 			}
 		}
 	}
+	static int round = 0;
+	static long max = 0;
+	static int whichRound = 0;
+	static int[] whichStep = new int[5];
+	static long allTotal = 0;
+	
 	
 	private static final String[] EDGE;
 	private static String[][] world;
@@ -411,10 +495,20 @@ public abstract class Critter {
 		for (String[] row : world) {
 			Arrays.fill(row, " ");
 			row[0] = row[row.length-1] = "|";
-		}	
+		}
 	}
 	
 	public static void displayWorld() {
+		// Graphical displayWorld()
+		if (Viewer.GUI) {
+			if (Viewer.skip);
+			else
+				for (Critter c : active)
+					if (c.energy > 0)
+						paintToGrid(c,c.x_coord,c.y_coord);
+			return;
+		}
+		
 		// load changes to world String[][]
 		for (Critter c : active)
 			world[c.y_coord][c.x_coord+1] = c.toString();
@@ -435,5 +529,21 @@ public abstract class Critter {
 		for (String s : EDGE)
 			System.out.print(s);
 		System.out.println();
+	}
+	
+	private static void paintToGrid(Critter c, int x, int y){
+		if (!iconBank.containsKey(c))
+			iconBank.put(c, new Icon(c));
+		
+		if (Viewer.spaceMap.containsKey(c.p)) {
+			if (Viewer.spaceMap.get(c.p).equals(iconBank.get(c).body))
+				return;
+			
+			Node occupant = Viewer.spaceMap.remove(c.p);
+			Viewer.trash.getChildren().add(occupant);
+			Viewer.world.getChildren().remove(iconBank.get(c));
+		}
+		Viewer.spaceMap.put(c.p, iconBank.get(c).body);
+		Viewer.world.add(iconBank.get(c).body, x, y);
 	}
 }

@@ -1,6 +1,5 @@
-/* CRITTERS Main.java
+/* CRITTERS
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
  * Spencer Yue
  * STY223
  * https://github.com/spenceryue/critters
@@ -8,6 +7,8 @@
  * Summer 2016
  */
 package project4;
+
+import javafx.scene.paint.Color;
 
 public class Craig extends Critter {
 
@@ -77,5 +78,20 @@ public class Craig extends Critter {
 		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * craigs.size()) + "% right   ");
 		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left   ");
 		System.out.println();
+	}
+
+	@Override
+	protected Color viewOutlineColor() {
+		return Color.rgb(61, 184, 255); // baby blue
+	}
+
+	@Override
+	protected Color viewFillColor() {
+		return Color.WHITE;
+	}
+
+	@Override
+	protected Color viewTextColor() {
+		return Color.rgb(31, 95, 254); // blue
 	}
 }

@@ -1,6 +1,5 @@
-/* CRITTERS Main.java
+/* CRITTERS
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
  * Spencer Yue
  * STY223
  * https://github.com/spenceryue/critters
@@ -9,6 +8,7 @@
  */
 package project4;
 
+import javafx.scene.paint.Color;
 import project4.Critter.TestCritter;
 
 public class Algae extends TestCritter {
@@ -19,5 +19,20 @@ public class Algae extends TestCritter {
 	
 	public void doTimeStep() {
 		setEnergy(getEnergy() + Params.photosynthesis_energy_amount);
+	}
+
+	@Override
+	protected Color viewOutlineColor() {
+		return Color.rgb(12, 172, 56); // green
+	}
+
+	@Override
+	protected Color viewFillColor() {
+		return Color.rgb(164, 230, 23); // lime
+	}
+
+	@Override
+	protected Color viewTextColor() {
+		return Color.rgb(22, 125, 29); // forest
 	}
 }

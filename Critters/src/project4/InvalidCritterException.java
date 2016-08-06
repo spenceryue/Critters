@@ -9,6 +9,7 @@
  */
 package project4;
 
+@SuppressWarnings("serial")
 public class InvalidCritterException extends Exception {
 	String offending_class;
 	

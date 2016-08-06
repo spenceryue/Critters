@@ -1,0 +1,31 @@
+.root {
+	blue: rgb(31, 95, 254);
+	green: rgb(12, 172, 56);
+	red: rgb(237,51,31);
+	maroon: rgb(198,41,56);
+	orange: rgb(250,147,30);
+	tangy: rgb(255,206,31);
+	yellow: rgb(250,243,32);
+	lime: rgb(164,230,23);
+	forest: rgb(22,125,29);
+	aqua: rgb(56,209,176);
+	baby-blue: rgb(61,184,255);
+	navy: (19,83,186);
+	purple: (130,82,209);
+	pink: rgb(255,115,166);
+	brown: rgb(144,76,21);
+	dark-gray: rgb(64,64,64);
+	space-gray: rgb(128,128,128);
+	light-gray: rgb(191,191,191);
+}
+
+#icon, #custom-toggle-button {
+	-fx-background-color: white
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 2, 0.0 , 0 , 1 );
+    -fx-border-color: black;
+    -fx-border-insets: 0;
+    -fx-border-width: 2;
+}

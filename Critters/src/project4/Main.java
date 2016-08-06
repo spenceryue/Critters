@@ -1,6 +1,5 @@
-/* CRITTERS Main.java
+/* CRITTERS
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
  * Spencer Yue
  * STY223
  * https://github.com/spenceryue/critters
@@ -12,9 +11,7 @@ package project4;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,13 +19,15 @@ public class Main {
 	// true -> default "make" command of 100 Algae, 25 Craig
 	private static boolean test_Stage12 = false;
 	private static boolean allowQuick = true;
-	private static List<String> classes = new java.util.ArrayList<String>();
+	protected static List<String> classes = new java.util.ArrayList<String>();
+	static {
+		Main.buildClassList();
+	}
 	
 	public static void main(String[] args) throws InvalidCritterException {
 		Scanner sc = new Scanner(System.in);
-		buildClassList();
 		System.out.print("Available Critters: "+classes.get(0));
-		for (String s : classes.subList(1, classes.size()-1))
+		for (String s : classes.subList(1, classes.size()))
 			System.out.print(", "+s);
 		System.out.println("\n");
 		
@@ -40,8 +39,12 @@ public class Main {
 			String[] input = line.split("[ \\t]++");
 			
 			int i = 0;
-			while (input[i].length()==0)
+			if (input.length == 0)
+				continue;
+			while (i<input.length && input[i].length()==0)
 				i++;
+			if (i>= input.length)
+				continue;
 			String s = input[i].toLowerCase();
 			
 			if (s.equals("quit"))
@@ -61,7 +64,7 @@ public class Main {
 					// remove print statement... "*"
 				{System.out.println("*");printUsage();}
 			else if (s.equals("make"))
-				if (i+1<input.length && classes.contains(input[i+1]))
+				if (i+1<input.length && classes.contains(input[i+1].replace("project4.","")))
 					if (i+2<input.length && input[i+2].matches("\\d+"))
 						for (int j=0; j<Integer.parseInt(input[i+2]); j++)
 							try {
@@ -90,23 +93,25 @@ public class Main {
 					// remove print statement... "**"
 					{System.out.println("**");printUsage();}
 			else if (s.equals("stats"))
-				if (i+1<input.length && classes.contains(input[i+1]))
+				if (i+1<input.length && classes.contains(input[i+1].replace("project4.",""))) {
+					List<Critter> critterList = null;
 					try {
 						String qualifiedName = input[i+1];
 						if (!input[i+1].startsWith("project4."))
 							qualifiedName = "project4."+qualifiedName;
-						List<Critter> critterList = Critter.getInstances(qualifiedName);
+						critterList = Critter.getInstances(qualifiedName);
 						Method runStats = Class.forName(qualifiedName).getDeclaredMethod("runStats", List.class);
 						runStats.invoke(null, critterList);
-					} catch (NoSuchMethodException 
-							| SecurityException 
+					} catch (SecurityException 
 							| InvocationTargetException
 							| IllegalAccessException
 							| ClassNotFoundException
 							| InvalidCritterException e) {
 						System.err.println(e.toString());
+					} catch (NoSuchMethodException e) {
+						Critter.runStats(critterList);
 					}
-				else
+				} else
 					// remove print statement... "***"
 				{System.out.println("***");printUsage();}
 			else if (s.equals("'") && allowQuick)
@@ -124,11 +129,12 @@ public class Main {
 //		System.out.println(new Algae().getClass().getName());
 //		System.out.println(
 //				Class.forName("project4.Algae", true, URLClassLoader.newInstance(new URL[] {new File(".").toURI().toURL()} ) ).getTypeName());
-		try {
-			System.out.println(
-					Class.forName("project4.Algae", true, URLClassLoader.newInstance(new URL[] {new File(".").toURI().toURL()} ) ).getTypeName());
-		} catch (Exception e) {
-		}
+//		try {
+//			System.out.println(
+//					Class.forName("project4.Algae", true, URLClassLoader.newInstance(new URL[] {new File(".").toURI().toURL()} ) ).getTypeName());
+//		} catch (Exception e) {
+//			System.out.println("hello");
+//		}
 //		String s = "project4.Algae";
 //		System.out.println((s.matches("[a-zA-Z[0-9][.]]++")));
 	}
@@ -154,6 +160,13 @@ public class Main {
 		classes.remove("Main");
 		classes.remove("Params");
 		classes.remove("Point");
+		// make sure each entry is a subclass of Critter
+		Iterator<String> i = classes.iterator();
+		while(i.hasNext())
+			try {
+				if (!Critter.class.isAssignableFrom(Class.forName("project4."+i.next())))
+					i.remove();
+			} catch (ClassNotFoundException e) {e.printStackTrace();}
 	}
 	
 	private static void explore(File start){
@@ -162,6 +175,15 @@ public class Main {
 				explore(f);
 			else if (f.isFile())
 				if (f.getName().endsWith(".class"))
-					classes.add(f.getName().substring(0,f.getName().length()-6));
+					classes.add(f.getName().replace(".class",""));
+	}
+	
+	public static String match(String s) {
+		String match = null;
+		s = s.replace("project4.", "").toLowerCase();
+		for (String c : Main.classes)
+			if (c.toLowerCase().equals(s))
+				match = c;
+		return match;
 	}
 }

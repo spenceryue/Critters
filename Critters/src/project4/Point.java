@@ -1,6 +1,5 @@
-/* CRITTERS Main.java
+/* CRITTERS
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
  * Spencer Yue
  * STY223
  * https://github.com/spenceryue/critters

@@ -1,6 +1,5 @@
-/* CRITTERS Main.java
+/* CRITTERS
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
  * Spencer Yue
  * STY223
  * https://github.com/spenceryue/critters
@@ -8,6 +7,8 @@
  * Summer 2016
  */
 package project4;
+
+import javafx.scene.paint.Color;
 
 public class Berserker extends Critter {
 
@@ -74,16 +75,19 @@ public class Berserker extends Critter {
 	private boolean ace(){
 		try {
 		java.util.List<Critter> others = getInstances("Critter");
-		int count = 0;
-		for (Critter c : others)
+		//int count = 0;
+		/*for (Critter c : others)
 			if (!(c instanceof Berserker) && !(c instanceof Algae) && c.getEnergy() > 0){
 				count+= Math.ceil((double)c.getEnergy()/Params.walk_energy_cost);
-			}
+			}*/
 		for (Critter c : others)
 			if (!(c instanceof Berserker) && !(c instanceof Algae))
 				while (c.getEnergy() > 0) {
-					c.walk(getRandomInt(8));
-					System.out.format("BERSERKER ATTACKS!!! %d%n",count--);
+					c.walk(0);
+					c.run(0);
+					c.look(0);
+					c.look2(0);
+					//System.out.format("BERSERKER ATTACKS!!! %d%n",count--);
 				}
 		} catch (InvalidCritterException /*| InterruptedException*/ e) {}
 		return healAndDouble();
@@ -116,5 +120,20 @@ public class Berserker extends Critter {
 		System.out.print("" + Berserkers.size() + " total Berserkers    ");
 		
 		System.out.println("total energy: "+tot_energy+"   total spawned: "+spawned);
+	}
+
+	@Override
+	protected Color viewOutlineColor() {
+		return Color.rgb(130, 82, 209); // purple
+	}
+
+	@Override
+	protected Color viewFillColor() {
+		return Color.rgb(250, 243, 32); // yellow
+	}
+	
+	@Override
+	protected Color viewTextColor() {
+		return Color.BLACK;
 	}
 }
