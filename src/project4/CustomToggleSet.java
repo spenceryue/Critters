@@ -30,6 +30,7 @@ public class CustomToggleSet {
 		this.selector=selector;
 		
 		info = new Label(prompt);
+		info.setId("custom-toggle-info");
 		
 		yes = new ToggleButton("Y");
 		yes.setId("custom-toggle-button");
@@ -58,11 +59,9 @@ public class CustomToggleSet {
 				if (!Viewer.skip) {
 					yes.setId("custom-toggle-button");
 					no.setId(no.getId()+"-on");
-					yes.requestFocus();
 				} else {
 					yes.setId(yes.getId()+"-on");
 					no.setId("custom-toggle-button");
-					no.requestFocus();
 				}
 				System.out.println(Viewer.skip);
 			}

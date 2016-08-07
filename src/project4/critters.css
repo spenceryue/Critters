@@ -167,7 +167,12 @@
 	-fx-padding: 5.8 5.8 1.8 5.8;
 }
 
-#custom-info {
+#layer3_skip_to_finish {
+	-fx-spacing: 5;
+	-fx-alignment: bottom-left;
+}
+
+#custom-info, #custom-toggle-info {
 	-fx-alignment: bottom-left;
 	-fx-background-color: transparent;
 	-fx-border-width: 0;
@@ -176,12 +181,17 @@
 	-fx-min-width: 3em;
 }
 
+#custom-toggle-info {
+	-fx-padding: 3 0 0 0;
+}
+
 #custom-slider {
 }
 
 #layer2-left-row2-submit-box {
 	-fx-spacing: 30;
 	-fx-alignment: center-right;
+	-fx-padding: 0 12 0 0;
 }
 
 .button {
@@ -189,26 +199,27 @@
 	-fx-font-size:14;
 	-fx-text-fill: green;
 	-fx-border-width: 1.2;
-	-fx-padding: 5 5 5 5;
-	-fx-min-width: 2em;
+	-fx-padding: 4 5 4 5;
+	-fx-min-width: 2.1em;
 }
 
 .button:hover,
 #custom-toggle-button:hover {
 	-fx-text-fill: white;
 	-fx-background-color: baby-blue;
-	-fx-border-color: navy;	
+	-fx-border-color: blue;	
 }
 
 .button:pressed,
 #custom-toggle-button:pressed {
 	-fx-background-color:navy;
-	-fx-border-color:aqua;
+	-fx-border-color: blue;
 }
 
 .button:focused,
 #custom-toggle-button:focused {
-	-fx-border-color: rgb(105, 188, 238);
+	-fx-border-color: blue;//rgb(105, 188, 238);
+	-fx-border-width: 1.8;
 }
 
 #layer2-left-row3-stats-box {
@@ -217,7 +228,7 @@
 
 #layer3-stats-select {
 	-fx-alignment: center-left;
-	-fx-spacing: 10;
+	-fx-spacing: 0;
 }
 
 #layer4-stats-for {

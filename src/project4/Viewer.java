@@ -135,15 +135,15 @@ public class Viewer extends Application {
 						layer4_add_a_critter = new CustomTextField("Add a Critter","layer4-add-a-critter");
 						layer3_left_column1.getChildren().add(layer4_add_a_critter.container);
 						
-						layer4_how_many_steps = new CustomTextField("How Many Steps?","layer4-how-many-steps");
-						layer3_left_column1.getChildren().add(layer4_how_many_steps.container);
-					
+						layer4_how_many_critters = new CustomTextField("How Many Critters?","layer4-how-many-critters");
+						layer3_left_column1.getChildren().add(layer4_how_many_critters.container);
+						
 					VBox layer3_left_column2 = new VBox();
 					layer3_left_column2.setId("layer3-left-column2");
 					layer2_left_row1_controls_grid.getChildren().add(layer3_left_column2);
 					
-						layer4_how_many_critters = new CustomTextField("How Many Critters?","layer4-how-many-critters");
-						layer3_left_column2.getChildren().add(layer4_how_many_critters.container);
+						layer4_how_many_steps = new CustomTextField("How Many Steps?","layer4-how-many-steps");
+						layer3_left_column2.getChildren().add(layer4_how_many_steps.container);
 						
 						layer4_speed = new CustomSlider("Speed","layer4-speed");
 						layer3_left_column2.getChildren().add(layer4_speed.container);

@@ -73,7 +73,7 @@ class CustomTextField {
 		container.getChildren().addAll(field,confirm);
 		container.setOnMouseEntered((event) -> {
 			if (!container.getId().contains("-focused"))
-					container.setId(container.getId()+"-focused");
+					container.setId(container.getId().replace("-focused","")+"-focused");
 		});
 		container.setOnMouseExited((event) -> {
 			container.setId(container.getId().replace("-focused",""));
@@ -90,7 +90,7 @@ class CustomTextField {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (field.isFocused()) {
 					field.clear();
-					container.setId(container.getId()+"-focused");
+					container.setId(container.getId().replace("-focused","")+"-focused");
 				} else
 					container.setId(container.getId().replace("-focused",""));
 			}
