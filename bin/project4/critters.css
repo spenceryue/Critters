@@ -212,7 +212,7 @@
 }
 
 #layer2-left-row3-stats-box {
-	-fx-border-color: red;
+	-fx-border-color: blue;
 }
 
 #layer3-stats-select {
@@ -372,7 +372,7 @@
 
 #layer2-right-row0-world {
 	-fx-grid-lines-visible: false;
-	-fx-border-color: red;
+	-fx-border-color: blue;
 	-fx-border-width: 2;
 }
 

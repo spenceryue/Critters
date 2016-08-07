@@ -89,7 +89,7 @@ public class StatCard {
 			row1_name = new HBox();
 			container.getChildren().add(row1_name);
 			
-				myIcon = new Icon(c);
+				myIcon = new Icon(c);//,true);
 				myIcon.body.setCacheHint(CacheHint.QUALITY);
 				
 				name = new Text(" "+className);
@@ -100,7 +100,8 @@ public class StatCard {
 			photo = findPicture(new File ("."),c.getClass().getName());//photos.containsKey(c.getClass()) ? photos.get(c.getClass()) : null;
 			if (photo == null) {
 				System.out.println("Picture not found for "+className);
-				Icon sub = new Icon(c);
+				Icon sub = new Icon(c);//,true);
+				sub.body.setCacheHint(CacheHint.QUALITY);
 				sub.resizeFromDefault(100, 100);
 		        photo_substitute = sub.body;
 		        container.getChildren().add(photo_substitute);

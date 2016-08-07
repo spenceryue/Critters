@@ -31,6 +31,11 @@ public class Icon {
 			fontSize = 5;
 	}
 	
+	public Icon(Critter c, boolean quality) {
+		this(c);
+		if (quality)
+			body.setStyle(body.getStyle()+"-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 2, 0.0 , 0 , 1 );");
+	}
 	public Icon(Critter c) {
 		this.c=c;
 		
@@ -61,7 +66,7 @@ public class Icon {
 				+ "-fx-border-color: " + border_color + ";\n"
 				+ "-fx-border-radius: 5em;\n"
 				+ "-fx-border-insets: 0;\n"
-				+ "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 2, 0.0 , 0 , 1 );\n"
+//				+ "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 2, 0.0 , 0 , 1 );\n"
 				+ "-fx-min-width: 2em;\n"
 				+ "-fx-min-height: 2em;\n"
 				+ "-fx-max-width: 2em;\n"
