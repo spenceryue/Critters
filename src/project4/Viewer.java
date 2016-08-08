@@ -50,13 +50,18 @@ public class Viewer extends Application {
 	static double screenHeight;
 	
 	public static void main(String[] args) {
-		Params.world_width = Integer.parseInt(args[0]);
-		Params.world_height = Integer.parseInt(args[1]);
+		if (args.length != 0) {
+			Params.world_width = Integer.parseInt(args[0]);
+			Params.world_height = Integer.parseInt(args[1]);
+		} else {
+			Params.world_width = 20;
+			Params.world_height = 20;
+		}
 		System.out.println(Params.world_width + " " + Params.world_height);
 		rows = Params.world_width;
 		cols = Params.world_height;
 		stageWidth = Icon.fontSize*2.2*rows+505;
-		stageHeight = Icon.fontSize*2*cols > 380 ? Icon.fontSize*2*cols : 380;
+		stageHeight = Icon.fontSize*2*cols > 620 ? Icon.fontSize*2*cols : 620;
 		Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 		screenWidth = screenSize.getWidth();
 		screenHeight = screenSize.getHeight();
