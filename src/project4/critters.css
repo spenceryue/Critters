@@ -34,7 +34,7 @@
 	-fx-spacing: 10;
 }
 
-#layer1-left_pane {
+#layer1-left-pane {
 	-fx-min-width: 40em;
 //	-fx-background-color: inherit;
 	-fx-padding: 20;
@@ -63,12 +63,22 @@
 }
 
 #layer2-left-row1-controls-grid, #layer2-left-row3-stats-box {
+	-fx-alignment: center;
 	-fx-border-color: blue;
 	-fx-border-width: 2;
 	-fx-spacing: 15;
 	-fx-padding: 10;
 	-fx-min-width: 35em;
 }
+
+#layer2-left-row1-controls-grid {
+//	-fx-spacing: 0;//15;
+//	-fx-padding: 10 0 10 0;//10;
+}
+
+//#layer3-gap1, #layer3-gap2, #layer3-gap3 {
+//	-fx-max-width: infinity;
+//}
 
 #layer3-left-column1, #layer3-left-column2 {
 	-fx-spacing: 15;
@@ -135,7 +145,7 @@
 	-fx-font-family: tahoma;
 	-fx-font-size:14;
 	-fx-text-fill: green;
-	-fx-alignment: center;
+	-fx-alignment: center-right;
 }
 
 #custom-confirm:disabled {
@@ -160,19 +170,20 @@
 
 #layer4-speed, #layer4-speed-focused {
 	-fx-min-height:3em;
-	-fx-padding: 7 7 3 7;
+	-fx-padding: 7 7 3 12;
+	-fx-spacing: 5;
 }
 
 #layer4-speed-focused {
 	-fx-padding: 5.8 5.8 1.8 5.8;
 }
 
-#layer3_skip_to_finish {
+#layer3-skip-to-finish {
 	-fx-spacing: 5;
-	-fx-alignment: bottom-left;
+	-fx-alignment: center-left;
 }
 
-#custom-info, #custom-toggle-info {
+#custom-info, #custom-toggle-info, #layer2-step-counter {
 	-fx-alignment: bottom-left;
 	-fx-background-color: transparent;
 	-fx-border-width: 0;
@@ -182,7 +193,6 @@
 }
 
 #custom-toggle-info {
-	-fx-padding: 3 0 0 0;
 }
 
 #custom-slider {
@@ -190,7 +200,7 @@
 
 #layer2-left-row2-submit-box {
 	-fx-spacing: 30;
-	-fx-alignment: center-right;
+	-fx-alignment: bottom-right;
 	-fx-padding: 0 12 0 0;
 }
 
@@ -244,6 +254,7 @@
 .combo-box .text-input {
 	-fx-font-size: 16;
 	-fx-min-width: 1em;
+	-fx-padding: 2 2 2 0;
 }
 
 #layer4-all-critters .arrow-button {
@@ -367,9 +378,10 @@
 	-fx-max-height: infinity;
 }
 
-#layer1-right_pane {
+#layer1-right-pane {
 	-fx-alignment: center;
-	//-fx-spacing: ;
+	//-fx-max-width: 35em;
+	//-fx-pref-width: 35em; 
 }
 
 #layer2-step-counter {
@@ -422,7 +434,7 @@
 	-fx-padding:0px;
 }
 
-#custom-confirm, #layer3_go, #layer4_back, #layer4-clear {
+#custom-confirm, #layer3-go, #layer4-back, #layer4-clear {
 	-fx-min-width: 4em;
 	-fx-min-height: 2em;
 	-fx-max-width: 4em;

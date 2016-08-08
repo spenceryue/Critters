@@ -158,9 +158,9 @@ public class StatCard {
 				countAlive++;
 			else
 				countDead++;
-		alive.setText(String.format("%9d\t%s", countAlive, "Alive"));
-		dead.setText(String.format("%9d\t%s", countDead, "Dead"));
-		survival.setText(Double.isNaN(getSurvival()) ? "" : String.format("%6.2f%%\t%s", getSurvival(),"Survival"));
+		alive.setText(String.format("%9d\t %s", countAlive, "Alive"));
+		dead.setText(String.format("%9d\t %s", countDead, "Dead"));
+		survival.setText(Double.isNaN(getSurvival()) ? "" : String.format("%6.2f%%\t %s", getSurvival(),"Survival"));
 	}
 	
 	public Text getDetails() {

@@ -39,23 +39,24 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 //import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+//import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Viewer extends Application {
 
-	public static void main(String[] args) {launch(args);}
+	static double screenWidth;
+	static double screenHeight;
 	
-	final static boolean GUI = true;
-	final static double screenWidth;
-	final static double screenHeight;
-	static double stageWidth = Icon.fontSize*2*Params.world_width+480;
-	static double stageHeight = Icon.fontSize*2*Params.world_height > 380 ? Icon.fontSize*3*Params.world_height : 380;
-	
-	static VBox layer1_left_pane; static GridPane layer2_right_row0_world; static GridPane world; static Text layer2_step_counter; static Button layer4_clear; static Button layer4_back; static HBox layer2_left_row1_controls_grid; static Button layer3_go; static CustomTextField layer4_add_a_critter; static CustomTextField layer4_how_many_steps; static CustomTextField layer4_how_many_critters; static CustomSlider layer4_speed; static CustomToggleSet layer3_skip_to_finish; static ComboBox<String> layer4_all_critters; static HBox layer4_critters_clip_box;
-	static {
+	public static void main(String[] args) {
+		Params.world_width = Integer.parseInt(args[0]);
+		Params.world_height = Integer.parseInt(args[1]);
+		System.out.println(Params.world_width + " " + Params.world_height);
+		rows = Params.world_width;
+		cols = Params.world_height;
+		stageWidth = Icon.fontSize*2.2*rows+505;
+		stageHeight = Icon.fontSize*2*cols > 380 ? Icon.fontSize*2*cols : 380;
 		Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 		screenWidth = screenSize.getWidth();
 		screenHeight = screenSize.getHeight();
@@ -63,9 +64,23 @@ public class Viewer extends Application {
 			stageWidth = screenWidth;
 		if (stageHeight > screenHeight)
 			stageHeight = screenHeight;
+		launch(args);}
+	
+	static int rows;
+	static int cols;
+	
+	final static boolean GUI = true;
+	
+	//static double stageWidth = Icon.fontSize*1.5*Params.world_width+480;
+	//static double stageHeight = Icon.fontSize*2*Params.world_height > 380 ? Icon.fontSize*3*Params.world_height : 380;
+	static double stageWidth;
+	static double stageHeight;
+	
+	static VBox layer1_left_pane; static GridPane layer2_right_row0_world; static GridPane world; static Label layer2_step_counter; static Button layer4_clear; static Button layer4_back; static HBox layer2_left_row1_controls_grid; static Button layer3_go; static CustomTextField layer4_add_a_critter; static CustomTextField layer4_how_many_steps; static CustomTextField layer4_how_many_critters; static CustomSlider layer4_speed; static CustomToggleSet layer3_skip_to_finish; static ComboBox<String> layer4_all_critters; static HBox layer4_critters_clip_box;
+	static {
 		layer2_right_row0_world = world = new GridPane();
 		layer2_right_row0_world.setId("layer2-right-row0-world");
-		layer2_step_counter = new Text("");
+		layer2_step_counter = new Label("");
 		layer2_step_counter.setId("layer2-step-counter");
 		layer4_clear = new Button("Clear");
 		layer4_back = new Button("x");
@@ -101,7 +116,7 @@ public class Viewer extends Application {
 		layer0_white_bg.setId("layer0-white-bg");
 		
 			layer1_left_pane = new VBox();
-			layer1_left_pane.setId("layer1-left_pane");
+			layer1_left_pane.setId("layer1-left-pane");
 	//		layer1_left_pane.setMinWidth(480);
 	//		layer1_left_pane.minWidthProperty().bind(layer1_left_pane.prefWidthProperty());;
 			layer0_white_bg.getChildren().add(layer1_left_pane);
@@ -128,8 +143,14 @@ public class Viewer extends Application {
 				layer2_left_row1_controls_grid.setId("layer2-left-row1-controls-grid");
 				layer1_left_pane.getChildren().add(layer2_left_row1_controls_grid);
 				
+			/*		VBox layer3_gap1 = new VBox();
+					layer3_gap1.setId("layer3-gap1");
+					HBox.setHgrow(layer3_gap1,Priority.ALWAYS);
+					layer2_left_row1_controls_grid.getChildren().add(layer3_gap1);
+			*/	
 					VBox layer3_left_column1 = new VBox();
 					layer3_left_column1.setId("layer3-left-column1");
+					HBox.setHgrow(layer3_left_column1,Priority.ALWAYS);
 					layer2_left_row1_controls_grid.getChildren().add(layer3_left_column1);
 					
 						layer4_add_a_critter = new CustomTextField("Add a Critter","layer4-add-a-critter");
@@ -137,9 +158,15 @@ public class Viewer extends Application {
 						
 						layer4_how_many_critters = new CustomTextField("How Many Critters?","layer4-how-many-critters");
 						layer3_left_column1.getChildren().add(layer4_how_many_critters.container);
-						
+					
+			/*		VBox layer3_gap2 = new VBox();
+					layer3_gap2.setId("layer3-gap2");
+					HBox.setHgrow(layer3_gap2,Priority.ALWAYS);
+					layer2_left_row1_controls_grid.getChildren().add(layer3_gap2);
+			*/		
 					VBox layer3_left_column2 = new VBox();
 					layer3_left_column2.setId("layer3-left-column2");
+					HBox.setHgrow(layer3_left_column2,Priority.ALWAYS);
 					layer2_left_row1_controls_grid.getChildren().add(layer3_left_column2);
 					
 						layer4_how_many_steps = new CustomTextField("How Many Steps?","layer4-how-many-steps");
@@ -148,6 +175,11 @@ public class Viewer extends Application {
 						layer4_speed = new CustomSlider("Speed","layer4-speed");
 						layer3_left_column2.getChildren().add(layer4_speed.container);
 						
+			/*		VBox layer3_gap3 = new VBox();
+					layer3_gap3.setId("layer3-gap3");
+					HBox.setHgrow(layer3_gap3,Priority.ALWAYS);
+					layer2_left_row1_controls_grid.getChildren().add(layer3_gap3);
+			*/			
 				HBox layer2_left_row2_submit_box = new HBox();
 				layer2_left_row2_submit_box.setId("layer2-left-row2-submit-box");
 				layer1_left_pane.getChildren().add(layer2_left_row2_submit_box);
@@ -303,7 +335,8 @@ public class Viewer extends Application {
 								layer5_single_view.getChildren().add(layer6_details);
 						
 			VBox layer1_right_pane = new VBox();
-			layer1_right_pane.setId("layer1-right_pane");
+			layer1_right_pane.setId("layer1-right-pane");
+			//layer1_right_pane.maxWidthProperty().bind(world.widthProperty());
 			layer0_white_bg.getChildren().add(layer1_right_pane);
 			
 //				Text layer2_step_counter = new Text("Step 0");

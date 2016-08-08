@@ -23,7 +23,8 @@ public class Icon {
 	String border_color;
 
 	// y = -0.0778x + 12.697	where x = sqrt(width*height)
-	static double fontSize = -0.0778*(Math.max(Params.world_width,Params.world_height)) + 12.697;
+	//static double fontSize = -0.0778*(Math.max(Params.world_width,Params.world_height)) + 12.697;
+	static double fontSize = -0.0778*(Math.max(Viewer.rows,Viewer.cols)) + 12.697;
 	static {
 		if (fontSize > 12.5)
 			fontSize = 12.5;
